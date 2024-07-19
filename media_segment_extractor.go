@@ -16,7 +16,7 @@ func main() {
 	inputFile := flag.String("input", "", "Input media file path (mp4 or mp3)")
 	outputFile := flag.String("output", "", "Output media file path (mp4 or mp3)")
 	startMark := flag.String("start", "00:00:00", "Start mark (format: HH:MM:SS)")
-	duration := flag.String("duration", "00:00:10", "Duration (format: HH:MM:SS)")
+	duration := flag.String("duration", "00:00:30", "Duration (format: HH:MM:SS)")
 	stripAudioFlag := flag.Bool("strip-audio", false, "Strip audio from input mp4 file")
 	addAudioFlag := flag.Bool("add-audio", false, "Add mp3 audio to input mp4 file")
 	audioFile := flag.String("audio", "", "Input mp3 audio file to add to mp4")
