@@ -1,5 +1,3 @@
-HTML_DOCS_DIR=htmldoc
-
 .PHONY: all default fmt lint clean build install
 
 default: all
