@@ -77,6 +77,8 @@ func stripAudio(inputFile, outputFile string) error {
 	return err
 }
 func addAudioToVideo(inputVideo, inputAudio, outputVideo string) error {
-	err := ffmpeg_go.Input(inputVideo).Input(inputAudio).Output(outputVideo, ffmpeg_go.KwArgs{"c:v": "copy", "c:a": "aac"}).Run()
+	videoStream := ffmpeg_go.Input(inputVideo)
+	audioStream := ffmpeg_go.Input(inputAudio)
+	err := ffmpeg_go.Output([]*ffmpeg_go.Stream{videoStream, audioStream}, outputVideo, ffmpeg_go.KwArgs{"c:v": "copy", "c:a": "aac", "strict": "experimental"}).Run()
 	return err
 }
