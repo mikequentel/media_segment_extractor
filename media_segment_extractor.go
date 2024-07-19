@@ -16,6 +16,7 @@ func main() {
 	outputFile := flag.String("output", "", "Output media file path (mp4 or mp3)")
 	startMark := flag.String("start", "00:00:00", "Start mark (format: HH:MM:SS)")
 	duration := flag.String("duration", "00:00:10", "Duration (format: HH:MM:SS)")
+	stripAudioFlag := flag.Bool("strip-audio", false, "Strip audio from input MP4 file")
 
 	flag.Parse()
 
@@ -35,6 +36,18 @@ func main() {
 		log.Fatal("unsupported file extension. Only .mp4 and .mp3 are supported")
 	}
 
+	if *stripAudioFlag {
+		if inputExt != ".mp4" {
+			log.Fatal("strip-audio option is only supported for .mp4 files")
+		}
+		fmt.Printf("Stripping audio from %s to %s\n", *inputFile, *outputFile)
+		err := stripAudio(*inputFile, *outputFile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println("Audio stripped successfully.")
+		return
+	}
 	fmt.Printf("Extracting segment from %s to %s, starting at %s, for duration %s\n", *inputFile, *outputFile, *startMark, *duration)
 
 	err := ffmpeg_go.Input(*inputFile, ffmpeg_go.KwArgs{"ss": *startMark}).Output(*outputFile, ffmpeg_go.KwArgs{"t": *duration}).Run()
@@ -43,4 +56,8 @@ func main() {
 	}
 
 	log.Println("Media segment extracted successfully.")
+}
+func stripAudio(inputFile, outputFile string) error {
+	err := ffmpeg_go.Input(inputFile).Output(outputFile, ffmpeg_go.KwArgs{"an": ""}).Run()
+	return err
 }
